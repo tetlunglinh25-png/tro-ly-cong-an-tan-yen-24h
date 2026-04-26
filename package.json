@@ -1,0 +1,20 @@
+{
+  "name": "tro-ly-cong-an-tan-yen-24h-google-api",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "local": "vercel dev",
+    "build-knowledge": "node scripts/build-knowledge.js"
+  },
+  "dependencies": {
+    "@google/genai": "^1.30.0",
+    "@vercel/node": "^5.5.12",
+    "dotenv": "^17.2.3",
+    "mammoth": "^1.11.0",
+    "pdf-parse": "^1.1.1"
+  },
+  "devDependencies": {
+    "vercel": "^48.9.0"
+  }
+}

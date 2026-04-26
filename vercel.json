@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "functions": {
+    "api/chat.js": {
+      "maxDuration": 45
+    },
+    "api/public-config.js": {
+      "maxDuration": 10
+    }
+  }
+}

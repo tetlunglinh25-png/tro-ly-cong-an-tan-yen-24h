@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="vi">
+<!-- File này phải được lưu bằng UTF-8 để tiếng Việt hiển thị đúng. -->
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Language" content="vi" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trợ lý Công an Tân Yên 24H</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap&subset=vietnamese" rel="stylesheet">
+  <style>
+    :root {
+      --blue-950: #052e66;
+      --blue-900: #074b9a;
+      --blue-700: #0876e8;
+      --blue-100: #e9f4ff;
+      --blue-50: #f5fbff;
+      --gold: #ffd447;
+      --red: #d71920;
+      --green: #009b63;
+      --text: #142f49;
+      --muted: #61758c;
+      --white: #ffffff;
+      --border: rgba(7, 75, 154, .16);
+      --shadow: 0 18px 48px rgba(5, 46, 102, .16);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-rendering: optimizeLegibility;
+      font-synthesis: none;
+    }
+
+    body {
+      font-family: "Be Vietnam Pro", "Segoe UI", Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        linear-gradient(rgba(234, 245, 255, .84), rgba(255, 255, 255, .88)),
+        url("./background.png") center center / cover no-repeat fixed,
+        radial-gradient(circle at top left, rgba(255, 212, 71, .32), transparent 28%),
+        radial-gradient(circle at top right, rgba(0, 155, 99, .17), transparent 32%),
+        linear-gradient(135deg, #eaf5ff 0%, #ffffff 50%, #edf7ff 100%);
+    }
+
+    .page { max-width: 1160px; margin: 0 auto; padding: 20px; }
+
+    .hero {
+      overflow: hidden;
+      position: relative;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #052653, #075bbb 58%, #0a83ff);
+      color: white;
+      padding: 25px 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero::before, .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+    }
+
+    .hero::before { width: 280px; height: 280px; right: -100px; top: -110px; }
+    .hero::after { width: 160px; height: 160px; left: 32px; bottom: -86px; }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 84px 1fr 84px;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .logo {
+      width: 84px;
+      height: 84px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.96);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px;
+      box-shadow: 0 12px 26px rgba(0,0,0,.18);
+      color: var(--blue-900);
+      font-size: 34px;
+      font-weight: 900;
+    }
+
+    .logo img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+    .title { text-align: center; }
+
+    .title .unit {
+      text-transform: uppercase;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      opacity: .95;
+      margin-bottom: 8px;
+    }
+
+    .title h1 {
+      font-size: clamp(26px, 4vw, 42px);
+      line-height: 1.12;
+      text-transform: uppercase;
+      text-shadow: 0 4px 14px rgba(0,0,0,.24);
+    }
+
+    .title .tagline {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 9px 15px;
+      border-radius: 999px;
+      background: var(--gold);
+      color: #17324b;
+      font-weight: 900;
+      font-size: 14px;
+    }
+
+    .layout {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: 335px 1fr;
+      gap: 18px;
+    }
+
+    .panel, .chat-card {
+      background: rgba(255,255,255,.92);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 16px 42px rgba(5,46,102,.10);
+      backdrop-filter: blur(12px);
+    }
+
+    .panel { padding: 18px; }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--blue-950);
+      font-size: 18px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--blue-700), var(--green));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .hint { color: var(--muted); font-size: 14px; line-height: 1.55; margin-bottom: 14px; }
+
+    .info-card {
+      padding: 15px;
+      border-radius: 18px;
+      background: var(--blue-50);
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .info-card strong { color: var(--blue-950); }
+    .warning { background: linear-gradient(135deg, rgba(255,212,71,.35), #fff); border-color: rgba(255, 212, 71, .7); }
+
+    .quick button {
+      width: 100%;
+      margin-top: 8px;
+      border: 1px solid var(--border);
+      background: white;
+      padding: 12px 12px;
+      border-radius: 15px;
+      text-align: left;
+      color: var(--text);
+      font-weight: 800;
+      cursor: pointer;
+      transition: .16s ease;
+      line-height: 1.35;
+      font-family: inherit;
+    }
+
+    .quick button:hover { background: var(--blue-100); color: var(--blue-950); transform: translateY(-1px); }
+
+    .contact-grid { display: grid; grid-template-columns: 1fr; gap: 9px; margin-top: 12px; }
+
+    .contact-link {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      padding: 13px 14px;
+      border-radius: 16px;
+      color: white;
+      font-weight: 900;
+      box-shadow: 0 12px 24px rgba(5, 46, 102, .14);
+      text-align: center;
+    }
+
+    .phone { background: linear-gradient(135deg, var(--red), #ff6b3d); }
+    .fanpage { background: linear-gradient(135deg, var(--green), var(--blue-700)); }
+
+    .chat-card { min-height: 680px; overflow: hidden; display: flex; flex-direction: column; }
+
+    .chat-header {
+      padding: 17px 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      background: linear-gradient(135deg, #fff, var(--blue-50));
+      border-bottom: 1px solid var(--border);
+    }
+
+    .bot-profile { display: flex; align-items: center; gap: 12px; }
+
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--blue-700), var(--green));
+      color: white;
+      font-size: 27px;
+      box-shadow: 0 10px 22px rgba(6,116,220,.22);
+      flex-shrink: 0;
+    }
+
+    .bot-profile h2 { font-size: 19px; color: var(--blue-950); margin-bottom: 3px; }
+    .bot-profile p { color: var(--muted); font-size: 13px; line-height: 1.4; }
+
+    .status {
+      white-space: nowrap;
+      color: #087347;
+      background: rgba(0,155,99,.12);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .messages {
+      flex: 1;
+      overflow: auto;
+      padding: 18px;
+      background:
+        linear-gradient(rgba(255,255,255,.76), rgba(255,255,255,.76)),
+        radial-gradient(circle at top right, rgba(6,116,220,.08), transparent 34%);
+    }
+
+    .message { display: flex; margin-bottom: 14px; animation: appear .18s ease both; }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message.user { justify-content: flex-end; }
+
+    .bubble {
+      max-width: 84%;
+      padding: 13px 15px;
+      border-radius: 18px;
+      font-size: 15px;
+      line-height: 1.62;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .message.assistant .bubble {
+      background: white;
+      border: 1px solid var(--border);
+      border-top-left-radius: 6px;
+      box-shadow: 0 8px 18px rgba(0,74,153,.08);
+    }
+
+    .message.user .bubble {
+      color: white;
+      background: linear-gradient(135deg, var(--blue-700), var(--blue-950));
+      border-top-right-radius: 6px;
+      box-shadow: 0 8px 18px rgba(0,74,153,.18);
+    }
+
+    .suggestions {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .suggestion-btn {
+      border: 1px solid var(--border);
+      background: var(--blue-50);
+      color: var(--blue-950);
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      line-height: 1.35;
+      transition: .16s ease;
+    }
+
+    .suggestion-btn:hover {
+      background: var(--blue-100);
+      transform: translateY(-1px);
+    }
+
+    .sources { display: none;
+      margin-top: 12px;
+      padding: 12px;
+      border-left: 4px solid var(--blue-700);
+      background: var(--blue-50);
+      border-radius: 12px;
+      font-size: 13px;
+      color: #26445e;
+    }
+
+    .input-area { padding: 15px; border-top: 1px solid var(--border); background: white; }
+
+    .input-row { display: flex; gap: 10px; align-items: flex-end; }
+
+    textarea {
+      flex: 1;
+      min-height: 54px;
+      max-height: 130px;
+      resize: none;
+      border: 1px solid var(--border);
+      outline: none;
+      border-radius: 18px;
+      padding: 14px 15px;
+      font-family: inherit;
+      font-size: 15px;
+      line-height: 1.4;
+      background: #fbfdff;
+      color: var(--text);
+    }
+
+    textarea:focus { border-color: var(--blue-700); box-shadow: 0 0 0 4px rgba(6,116,220,.10); }
+
+    .send, .clear {
+      border: none;
+      border-radius: 16px;
+      padding: 15px 18px;
+      font-weight: 900;
+      cursor: pointer;
+      font-family: inherit;
+      transition: .16s ease;
+    }
+
+    .send { background: linear-gradient(135deg, var(--green), var(--blue-700)); color: white; }
+    .clear { background: #eef6ff; color: var(--blue-950); }
+    .send:hover, .clear:hover { transform: translateY(-1px); }
+    .send:disabled { opacity: .65; cursor: not-allowed; transform: none; }
+
+    .notice { margin-top: 9px; color: var(--muted); font-size: 12px; line-height: 1.45; }
+
+    .typing { display: inline-flex; gap: 5px; align-items: center; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--blue-700); animation: blink 1s infinite ease-in-out; }
+    .dot:nth-child(2) { animation-delay: .15s; }
+    .dot:nth-child(3) { animation-delay: .3s; }
+
+    @keyframes blink {
+      0%, 80%, 100% { opacity: .25; transform: translateY(0); }
+      40% { opacity: 1; transform: translateY(-3px); }
+    }
+
+    footer { text-align: center; color: var(--muted); font-size: 13px; margin-top: 16px; line-height: 1.45; }
+
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .logo { margin: 0 auto; }
+      .layout { grid-template-columns: 1fr; }
+      .chat-card { min-height: 620px; }
+      .chat-header { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (max-width: 560px) {
+      .page { padding: 12px; }
+      .hero { padding: 22px 15px; border-radius: 24px; }
+      .logo { width: 68px; height: 68px; }
+      .input-row { flex-direction: column; }
+      .send, .clear { width: 100%; }
+      .bubble { max-width: 94%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="logo">
+          <img src="/logo-cong-an.png" alt="Logo Công an" onerror="this.remove(); this.parentElement.textContent='👮‍♂️';">
+        </div>
+
+        <div class="title">
+          <div class="unit" id="unitNameTop">Công an xã Tân Yên, Bắc Ninh</div>
+          <h1 id="botNameTop">Trợ lý Công an Tân Yên 24H</h1>
+          <div class="tagline">Hướng dẫn thực hiện thủ tục hành chính 24/24 đảm bảo an toàn - chính xác - tiện lợi</div>
+        </div>
+
+        <div class="logo">
+          <img src="/logo-doan.png" alt="Logo đơn vị phối hợp" onerror="this.remove(); this.parentElement.textContent='🇻🇳';">
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="panel">
+        <div class="section-title"><div class="icon">📚</div> Trợ lý Công an Tân Yên 24H</div>
+        <p class="hint">
+          Trợ lý hỗ trợ thực hiện thủ tục hành chính 24/24.
+        </p>
+
+        <div class="info-card">
+          <strong>Hướng dẫn sử dụng:</strong><br>
+          Đề nghị bà con nhân dân đặt câu hỏi tại khung chat.
+        </div>
+
+        <div class="info-card warning">
+          <strong>⚠️ Lưu ý bảo mật:</strong><br>
+          Không nhập số căn cước, số điện thoại, địa chỉ cụ thể, biển số xe hoặc thông tin vụ việc riêng tư trên khung chat.
+        </div>
+
+        <div class="section-title" style="font-size:16px;margin-top:16px;"><div class="icon" style="width:30px;height:30px;">💬</div> Câu hỏi mẫu</div>
+        <div class="quick">
+          <button onclick="askQuick('Hướng dẫn cài đặt định danh mức hai')">Hướng dẫn cài đặt định danh mức hai</button>
+          <button onclick="askQuick('Hướng dẫn cài đặt chữ ký số trên VNeID')">Hướng dẫn cài đặt chữ ký số trên VNeID</button>
+          <button onclick="askQuick('Hướng dẫn đăng ký thường trú')">Hướng dẫn đăng ký thường trú</button>
+          <button onclick="askQuick('Hướng dẫn đăng ký tạm trú')">Hướng dẫn đăng ký tạm trú</button>
+          <button onclick="askQuick('Hướng dẫn xác nhận thông tin cư trú')">Hướng dẫn xác nhận thông tin cư trú</button>
+          <button onclick="askQuick('Hướng dẫn khai báo lưu trú')">Hướng dẫn khai báo lưu trú</button>
+          <button onclick="askQuick('Tôi cần liên hệ Công an xã Tân Yên bằng cách nào?')">Tôi cần liên hệ Công an xã Tân Yên bằng cách nào?</button>
+        </div>
+
+        <div class="contact-grid">
+          <a class="contact-link phone" id="hotlineLink" href="tel:02403878666">☎️ Gọi trực ban: 0240.3878.666</a>
+          <a class="contact-link fanpage" id="fanpageLink" href="https://www.facebook.com/" target="_blank" rel="noopener">📩 Fanpage Công an xã Tân Yên</a>
+        </div>
+      </aside>
+
+      <section class="chat-card">
+        <div class="chat-header">
+          <div class="bot-profile">
+            <div class="avatar">👮‍♂️</div>
+            <div>
+              <h2 id="botNameHeader">Trợ lý Công an Tân Yên 24H</h2>
+              <p>Kỷ luật nhất - Trung thành nhất - Gần dân nhất.</p>
+            </div>
+          </div>
+          <div class="status">● Đang hoạt động</div>
+        </div>
+
+        <div class="messages" id="messages">
+          <div class="message assistant">
+            <div class="bubble">👮‍♂️ Kính chào bà con nhân dân, Tôi là Trợ lý Công an Tân Yên 24H, cảm ơn bạn đã đặt câu hỏi cho chúng tôi.
+
+📌 Bà con vui lòng nhập câu hỏi về thủ tục hành chính, cư trú, căn cước, định danh điện tử, chữ ký số trên VNeID hoặc nội dung an ninh trật tự cần tra cứu. 
+
+Xin cảm ơn bà con nhân dân!</div>
+          </div>
+        </div>
+
+        <div class="input-area">
+          <div class="input-row">
+            <textarea id="question" rows="2" placeholder="Nhập câu hỏi của bà con tại đây..."></textarea>
+            <button class="send" id="sendBtn" onclick="sendQuestion()">Gửi</button>
+            <button class="clear" onclick="clearChat()">Xóa</button>
+          </div>
+          <div class="notice">
+            Nếu nội dung khẩn cấp hoặc liên quan vụ việc cụ thể, bà con vui lòng gọi trực ban Công an xã Tân Yên: <strong id="hotlineText">0240.3878.666</strong>.
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      © <span id="unitNameFooter">Công an xã Tân Yên, Bắc Ninh</span> | Trợ lý ảo phục vụ bà con nhân dân 24/7 theo kho dữ liệu đã được duyệt.
+    </footer>
+  </div>
+
+  <script>
+    const messages = document.getElementById("messages");
+    const questionInput = document.getElementById("question");
+    const sendBtn = document.getElementById("sendBtn");
+
+    const config = {
+      botName: "Trợ lý Công an Tân Yên 24H",
+      unitName: "Công an xã Tân Yên, Bắc Ninh",
+      hotline: "0240.3878.666",
+      fanpageUrl: "https://www.facebook.com/"
+    };
+
+    loadPublicConfig();
+
+    questionInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        sendQuestion();
+      }
+    });
+
+    async function loadPublicConfig() {
+      try {
+        const res = await fetch("/api/public-config");
+        if (!res.ok) return;
+        const data = await res.json();
+        Object.assign(config, data);
+
+        document.getElementById("unitNameTop").textContent = config.unitName;
+        document.getElementById("unitNameFooter").textContent = config.unitName;
+        document.getElementById("botNameTop").textContent = config.botName;
+        document.getElementById("botNameHeader").textContent = config.botName;
+        document.getElementById("hotlineText").textContent = config.hotline;
+
+        const phoneHref = "tel:" + config.hotline.replace(/[^0-9+]/g, "");
+        document.getElementById("hotlineLink").href = phoneHref;
+        document.getElementById("hotlineLink").textContent = "☎️ Gọi trực ban: " + config.hotline;
+
+        document.getElementById("fanpageLink").href = config.fanpageUrl;
+      } catch (e) {
+        console.warn("Không tải được cấu hình công khai, dùng cấu hình mặc định.");
+      }
+    }
+
+    function askQuick(text) {
+      questionInput.value = text;
+      sendQuestion();
+    }
+
+    async function sendQuestion() {
+      const question = questionInput.value.trim();
+      if (!question) return;
+
+      addMessage("user", question);
+      questionInput.value = "";
+      setLoading(true);
+      const loadingId = addTyping();
+
+      try {
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question })
+        });
+
+        const data = await response.json();
+        removeMessage(loadingId);
+
+        if (data.hotline) {
+          config.hotline = data.hotline;
+          document.getElementById("hotlineText").textContent = data.hotline;
+        }
+
+        if (data.fanpageUrl) {
+          config.fanpageUrl = data.fanpageUrl;
+          document.getElementById("fanpageLink").href = data.fanpageUrl;
+        }
+
+        if (!response.ok) {
+          addMessage("assistant", data.error || "Hệ thống đang gặp lỗi. Bà con vui lòng liên hệ trực ban Công an xã Tân Yên.");
+          return;
+        }
+
+        addMessage("assistant", data.answer, data.sources || [], data.suggestions || []);
+      } catch (error) {
+        removeMessage(loadingId);
+        addMessage("assistant", `👮‍♂️ Kính chào bà con nhân dân, Tôi là ${config.botName}, cảm ơn bạn đã đặt câu hỏi cho chúng tôi.\n\nHệ thống hiện chưa kết nối được máy chủ. Đề nghị bà con nhân dân liên hệ với Công an xã Tân Yên qua số trực ban ${config.hotline} hoặc qua trang Fanpage Công an xã Tân Yên, Bắc Ninh để được hỗ trợ cụ thể hơn.\n\n🙏 Xin cảm ơn bà con nhân dân!`);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    function addTyping() {
+      const id = "msg-" + Date.now();
+      const div = document.createElement("div");
+      div.className = "message assistant";
+      div.id = id;
+      div.innerHTML = `<div class="bubble"><span class="typing"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>`;
+      messages.appendChild(div);
+      scrollBottom();
+      return id;
+    }
+
+    function addMessage(role, text, sources = [], suggestions = []) {
+      const div = document.createElement("div");
+      div.className = `message ${role}`;
+      // Không hiển thị phần tài liệu tham khảo dưới câu trả lời.
+      let sourceHtml = "";
+
+      let suggestionHtml = "";
+      if (role === "assistant" && suggestions && suggestions.length) {
+        suggestionHtml = `
+          <div class="suggestions">
+            ${suggestions.map(q => `<button class="suggestion-btn" onclick="askQuick('${escapeAttr(q)}')">${escapeHtml(q)}</button>`).join("")}
+          </div>
+        `;
+      }
+
+      div.innerHTML = `<div class="bubble">${escapeHtml(text)}${suggestionHtml}${sourceHtml}</div>`;
+      messages.appendChild(div);
+      scrollBottom();
+    }
+
+    function removeMessage(id) {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    }
+
+    function clearChat() {
+      messages.innerHTML = `<div class="message assistant"><div class="bubble">👮‍♂️ Kính chào bà con nhân dân, Tôi là ${config.botName}, cảm ơn bạn đã đặt câu hỏi cho chúng tôi.\n\n📌 Cuộc trò chuyện đã được làm mới. Bà con có thể tiếp tục đặt câu hỏi về thủ tục hành chính, cư trú, căn cước hoặc an ninh trật tự.\n\n🙏 Xin cảm ơn bà con nhân dân!</div></div>`;
+    }
+
+    function setLoading(isLoading) {
+      sendBtn.disabled = isLoading;
+      sendBtn.textContent = isLoading ? "Đang trả lời..." : "Gửi";
+    }
+
+    function scrollBottom() {
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function escapeHtml(text) {
+      return String(text || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;")
+        .replace(/\n/g, "<br>");
+    }
+
+    function escapeAttr(text) {
+      return String(text || "")
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'")
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+  </script>
+</body>
+</html>
